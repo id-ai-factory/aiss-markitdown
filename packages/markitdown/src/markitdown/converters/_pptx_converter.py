@@ -164,7 +164,18 @@ class PptxConverter(DocumentConverter):
                     if shape == title:
                         md_content += "# " + shape.text.lstrip() + "\n"
                     else:
-                        md_content += shape.text + "\n"
+                        paragraph_text = ''.join(run.text for run in shape.text_frame.paragraphs).strip()
+                        for p in shape.text_frame.paragraphs:
+                            if p.text == "":
+                                md_content += "\n"
+                                continue
+
+                            leading_ws = "&nbsp;" * p.level
+                            bullet = "- " if p.bullet else ""
+                            sub_heading = "### " if paragraph_text == p.text else ""
+                            newline = "\n\n" if paragraph_text == p.text else "\n"
+
+                            md_content += f"{sub_heading}{leading_ws}{bullet}{p.text.strip()}{newline}"
 
                 # Group Shapes
                 if shape.shape_type == pptx.enum.shapes.MSO_SHAPE_TYPE.GROUP:

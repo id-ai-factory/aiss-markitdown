@@ -171,7 +171,7 @@ class PptxConverter(DocumentConverter):
                                 continue
 
                             leading_ws = "&nbsp;" * p.level
-                            bullet = "- " if p.bullet else ""
+                            bullet = "- " if p.bullet.value else ""
                             sub_heading = "### " if paragraph_text == p.text else ""
                             newline = "\n\n" if paragraph_text == p.text else "\n"
 
